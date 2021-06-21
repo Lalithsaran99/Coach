@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import 'antd/dist/antd.css';
 import './index.css';
-import storage from './firebase';
+import storage from './base';
 import { Form, Input, Button, Row, Col, Upload } from 'antd';
 import { MinusCircleOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons';
 
