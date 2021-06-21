@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import 'antd/dist/antd.css';
 import './index.css';
-import { Form, Input, Button, Row, Col } from 'antd';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import storage from './firebase';
+import { Form, Input, Button, Row, Col, Upload } from 'antd';
+import { MinusCircleOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons';
 
 const layout = {
   labelCol: {
@@ -26,6 +27,15 @@ const Demo = () => {
   const onFinish = values => {
     console.log('Received values of form:', values);
   };
+
+  const [image , setImage] = useState('');
+const upload = ()=>{
+  if(image == null)
+    return;
+  storage.ref(`/images/${image.name}`).put(image)
+  .on("state_changed" , alert("success") , alert);
+}
+
   return (
     <>
       <Form form={form} {...layout} onFinish={onFinish} autoComplete="on">
@@ -164,109 +174,15 @@ const Demo = () => {
             </Form.Item>
           </Col>
           <Col xs={24} sm={24} md={12}>
-            <Form.Item label="Coachingtopic_set">
-              <Form.List name="coachingtopic_set">
-                {(fields, { add, remove }) => (
-                  <>
-                    {fields.map(field => (
-                      <>
-                        <Form.Item>
-                          <Row gutter={[16, 24]}>
-                            <Col xs={24} sm={24} md={12}>
-                              <Form.Item
-                                {...field}
-                                name={[field.name, 'coaching_category']}
-                                rules={[
-                                  {
-                                    required: true,
-                                    message: 'Missing coaching_category'
-                                  }
-                                ]}
-                              >
-                                <Input placeholder="coaching_category" />
-                              </Form.Item>
-                            </Col>
-                            <Col xs={24} sm={24} md={12}>
-                              <Form.Item
-                                {...field}
-                                name={[field.name, 'topic_name']}
-                                rules={[
-                                  {
-                                    required: true,
-                                    message: 'Missing topic_name'
-                                  }
-                                ]}
-                              >
-                                <Input placeholder="topic_name" />
-                              </Form.Item>
-                            </Col>
-                            <Col xs={24} sm={24} md={12}>
-                              <Form.Item
-                                {...field}
-                                name={[field.name, 'topic_description']}
-                                rules={[
-                                  {
-                                    required: true,
-                                    message: 'Missing topic_description'
-                                  }
-                                ]}
-                              >
-                                <Input placeholder="topic_description" />
-                              </Form.Item>
-                            </Col>
-                            <Col xs={24} sm={24} md={12}>
-                              <Form.Item
-                                {...field}
-                                name={[field.name, 'duration']}
-                                rules={[
-                                  {
-                                    required: true,
-                                    message: 'Missing duration'
-                                  }
-                                ]}
-                              >
-                                <Input placeholder="duration" />
-                              </Form.Item>
-                            </Col>
-                            <Col xs={24} sm={24} md={12}>
-                              <Form.Item
-                                {...field}
-                                name={[field.name, 'session_fee']}
-                                rules={[
-                                  {
-                                    required: true,
-                                    message: 'Missing session_fee'
-                                  }
-                                ]}
-                              >
-                                <Input placeholder="session_fee" />
-                              </Form.Item>
-                            </Col>
-                          </Row>
-                        </Form.Item>
-                        <MinusCircleOutlined
-                          onClick={() => remove(field.name)}
-                        />
-                      </>
-                    ))}
-                    <Form.Item>
-                      <Button
-                        type="dashed"
-                        onClick={() => add()}
-                        block
-                        icon={<PlusOutlined />}
-                      >
-                        Add Coaching topic
-                      </Button>
-                    </Form.Item>
-                  </>
-                )}
-              </Form.List>
+            <Form.Item label="File upload">
+              <Upload>
+              <Button icon={<UploadOutlined />} onChange={(e)=>{setImage(e.target.files[0])}}>Click to Upload</Button>
+              </Upload>
             </Form.Item>
           </Col>
           <Col xs={24} sm={24} md={24}>
             <Form.Item {...tailLayout}>
-              <Button type="primary"  {...tailLayout} htmlType="submit">
+              <Button type="primary" onClick={upload} {...tailLayout} htmlType="submit">
                 Submit
               </Button>
             </Form.Item>
