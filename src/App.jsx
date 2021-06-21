@@ -2,7 +2,7 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import './index.css';
 import app from './base';
-import { Form, Input, Button, Row, Col, Upload } from 'antd';
+import { Form, Input, Button, Row, Col } from 'antd';
 import { MinusCircleOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons';
 
 const layout = {
@@ -176,9 +176,7 @@ const Demo = () => {
           </Col>
           <Col xs={24} sm={24} md={12}>
             <Form.Item label="File upload">
-              <Upload>
-              <Button icon={<UploadOutlined />} onChange={onChange}>Click to Upload</Button>
-              </Upload>
+              <Input type="file" icon={<UploadOutlined />} onChange={onChange}/>
             </Form.Item>
           </Col>
           <Col xs={24} sm={24} md={24}>
