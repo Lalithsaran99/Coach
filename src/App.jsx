@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import 'antd/dist/antd.css';
 import './index.css';
-import storage from './base';
+import app from './base';
 import { Form, Input, Button, Row, Col, Upload } from 'antd';
 import { MinusCircleOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons';
 
@@ -28,13 +28,14 @@ const Demo = () => {
     console.log('Received values of form:', values);
   };
 
-  const [image , setImage] = useState('');
-const upload = ()=>{
-  if(image == null)
-    return;
-  storage.ref(`/images/${image.name}`).put(image)
-  .on("state_changed" , alert("success") , alert);
-}
+  const onChange = (e) => {
+    const file = e.target.files[0];
+    const storageRef = app.storage().ref()
+    const fileRef = storageRef.child(file.name)
+    fileRef.put(file).then(() => {
+      console.log("Uploaded a file")
+    })
+  }
 
   return (
     <>
@@ -176,13 +177,13 @@ const upload = ()=>{
           <Col xs={24} sm={24} md={12}>
             <Form.Item label="File upload">
               <Upload>
-              <Button icon={<UploadOutlined />} onChange={(e)=>{setImage(e.target.files[0])}}>Click to Upload</Button>
+              <Button icon={<UploadOutlined />} onChange={onChange}>Click to Upload</Button>
               </Upload>
             </Form.Item>
           </Col>
           <Col xs={24} sm={24} md={24}>
             <Form.Item {...tailLayout}>
-              <Button type="primary" onClick={upload} {...tailLayout} htmlType="submit">
+              <Button type="primary" {...tailLayout} htmlType="submit">
                 Submit
               </Button>
             </Form.Item>
