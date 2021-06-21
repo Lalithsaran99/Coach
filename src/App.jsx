@@ -1,6 +1,5 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import {app} from './base';
 import './index.css';
 import { Form, Input, Button, Row, Col } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
@@ -27,16 +26,6 @@ const Demo = () => {
   const onFinish = values => {
     console.log('Received values of form:', values);
   };
-
-  const onChange = (e) => {
-    const file = e.target.files[0];
-    const storageRef = app.storage().ref()
-    const fileRef = storageRef.child(file.name)
-    fileRef.put(file).then(() => {
-      console.log("Uploaded a file")
-    })
-  }
-
   return (
     <>
       <Form form={form} {...layout} onFinish={onFinish} autoComplete="on">
@@ -273,11 +262,6 @@ const Demo = () => {
                   </>
                 )}
               </Form.List>
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={24} md={12}>
-            <Form.Item label="File">
-            <input type="file" onChange={onChange}/>
             </Form.Item>
           </Col>
           <Col xs={24} sm={24} md={24}>
